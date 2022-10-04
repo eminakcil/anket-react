@@ -1,12 +1,23 @@
 import { lazy, Suspense } from 'react'
 import Loading from './components/Loading'
+
+const MainLayout = lazy(() => import('./layouts/MainLayout'))
+
 const HomePage = lazy(() => import('./pages/HomePage'))
 
 /** @type {import('react-router-dom').RouteObject[]} */
 const routes = [
   {
-    index: true,
-    element: <HomePage />,
+    path: '/',
+    element: <MainLayout />,
+    lazy: true,
+    children: [
+      {
+        index: true,
+        element: <HomePage />,
+        lazy: true,
+      },
+    ],
   },
 ]
 
