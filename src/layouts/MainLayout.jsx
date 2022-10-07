@@ -2,6 +2,8 @@ import { Link, Outlet } from 'react-router-dom'
 import Container from '../components/Container'
 import Button from '../components/Button'
 
+import { getPath } from '../utils'
+
 const MainLayout = () => {
   return (
     <Container>
@@ -9,14 +11,14 @@ const MainLayout = () => {
         <div className="flex justify-center gap-2 rounded border-solid border border-gray-400 p-6 w-full">
           <Button
             as={Link}
-            to="/"
+            to={getPath('surveys.create')}
             className="flex-1"
           >
             Anket Ekle
           </Button>
           <Button
             as={Link}
-            to="/"
+            to={getPath('surveys')}
             className="flex-1"
             variant="gray"
           >

@@ -5,6 +5,9 @@ const MainLayout = lazy(() => import('./layouts/MainLayout'))
 
 const HomePage = lazy(() => import('./pages/HomePage'))
 
+const SurveyListPage = lazy(() => import('./pages/Survey/SurveyListPage'))
+const SurveyCreatePage = lazy(() => import('./pages/Survey/SurveyCreatePage'))
+
 /** @type {import('react-router-dom').RouteObject[]} */
 const routes = [
   {
@@ -16,6 +19,23 @@ const routes = [
         index: true,
         element: <HomePage />,
         lazy: true,
+      },
+      {
+        path: 'surveys',
+        name: 'surveys',
+        children: [
+          {
+            index: true,
+            element: <SurveyListPage />,
+            lazy: true,
+          },
+          {
+            path: 'create',
+            name: 'create',
+            element: <SurveyCreatePage />,
+            lazy: true,
+          },
+        ],
       },
     ],
   },
