@@ -4,6 +4,7 @@ import { useReducer } from 'react'
 import inputListReducer, { initialInputList } from '../../../reducers/inputListReducer'
 
 const SelectQuestion = ({
+  prefix = '',
   initalValue = false,
   allowNewItem = true,
   label = 'Seçim listeli soru tipi',
@@ -21,7 +22,7 @@ const SelectQuestion = ({
   return (
     <div>
       <div className="mb-2 block">
-        <Label value={label} />
+        <Label value={`${prefix}${label}`} />
       </div>
       <div className="mb-2">
         <TextInput

@@ -1,10 +1,10 @@
 import { Label, TextInput } from 'flowbite-react'
 
-const TextQuestion = () => {
+const TextQuestion = ({ prefix = '' }) => {
   return (
     <div>
       <div className="mb-2 block">
-        <Label value="Açık Soru Tipi" />
+        <Label value={`${prefix}Açık Soru Tipi`} />
       </div>
       <TextInput
         type="text"

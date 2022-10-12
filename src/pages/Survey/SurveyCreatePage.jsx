@@ -1,11 +1,13 @@
-import { Label, Textarea, TextInput } from 'flowbite-react'
+import { Button, Label, Textarea, TextInput } from 'flowbite-react'
 import { useState } from 'react'
 import { plus } from '../../icons'
+import AddQuestionModal from './components/AddQuestionModal'
 import ImageModal from './components/ImageModal'
 import SurveyForm from './components/SurveyForm'
 
 const SurveyCreatePage = () => {
   const [imageModalVisibility, setImageModalVisibility] = useState(false)
+  const [questionModalVisibility, setQuestionModalVisibility] = useState(false)
 
   return (
     <>
@@ -35,6 +37,8 @@ const SurveyCreatePage = () => {
 
         <SurveyForm />
 
+        <Button onClick={() => setQuestionModalVisibility(true)}>Soru Ekle</Button>
+
         <div>
           <div className="mb-2 block">
             <Label value={'Özel "Teşekkür" Metni'} />
@@ -45,6 +49,10 @@ const SurveyCreatePage = () => {
       <ImageModal
         show={imageModalVisibility}
         onClose={() => setImageModalVisibility((x) => !x)}
+      />
+      <AddQuestionModal
+        show={questionModalVisibility}
+        onClose={() => setQuestionModalVisibility((x) => !x)}
       />
     </>
   )
