@@ -1,17 +1,15 @@
 import { Label, Table, TextInput } from 'flowbite-react'
-import { useImperativeHandle } from 'react'
-import { forwardRef } from 'react'
+import { useEffect } from 'react'
 import { useMemo, useReducer } from 'react'
 import inputListReducer, { initialInputList } from '../../../reducers/inputListReducer'
 
-const RateQuestion = forwardRef(({ prefix = '' }, _ref) => {
+const RateQuestion = ({ prefix = '', onChange = () => {} }) => {
   const [columns, columnsDispatch] = useReducer(inputListReducer, initialInputList())
   const [rows, rowsDispatch] = useReducer(inputListReducer, initialInputList())
 
-  useImperativeHandle(_ref, () => ({
-    getColumns: () => columns,
-    getRows: () => rows,
-  }))
+  useEffect(() => {
+    onChange(columns, rows)
+  }, [columns, rows])
 
   const holes = useMemo(() => {
     return columns.map((column) => (
@@ -66,8 +64,6 @@ const RateQuestion = forwardRef(({ prefix = '' }, _ref) => {
       </Table>
     </>
   )
-})
-
-RateQuestion.displayName = 'RateQuestion'
+}
 
 export default RateQuestion

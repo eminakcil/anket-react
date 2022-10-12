@@ -16,14 +16,14 @@ const AddQuestionModal = ({ show, onClose }) => {
   /** @type {import("react").MutableRefObject<HTMLElement>} */
   const contentRef = useRef()
 
-  const rateQuestionRef = useRef()
-
   useEffect(() => {
-    if (questionSelectRef.current && ghostRef.current) {
-      const element = questionType ? contentRef : questionSelectRef
-      ghostRef.current.style.height = `${element.current.clientHeight}px`
-    }
+    if (questionSelectRef.current && ghostRef.current) calculateHeight()
   }, [questionType, questionSelectRef, ghostRef, show])
+
+  const calculateHeight = () => {
+    const element = questionType ? contentRef : questionSelectRef
+    ghostRef.current.style.height = `${element.current.clientHeight}px`
+  }
 
   return (
     <Modal
@@ -75,10 +75,11 @@ const AddQuestionModal = ({ show, onClose }) => {
               </div>
             </Button>
             {(questionType === 'text' && <TextQuestion />) ||
-              (questionType === 'select' && <SelectQuestion />) ||
-              (questionType === 'rate' && <RateQuestion ref={rateQuestionRef} />) ||
+              (questionType === 'select' && <SelectQuestion onChange={calculateHeight} />) ||
+              (questionType === 'rate' && <RateQuestion onChange={calculateHeight} />) ||
               (questionType === 'yes/no' && (
                 <SelectQuestion
+                  onChange={calculateHeight}
                   initalValue={[
                     { id: 1, value: 'Evet' },
                     { id: 2, value: 'Hayır' },
