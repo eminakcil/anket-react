@@ -4,10 +4,65 @@ import { plus } from '../../icons'
 import AddQuestionModal from './components/AddQuestionModal'
 import ImageModal from './components/ImageModal'
 import SurveyForm from './components/SurveyForm'
+import { SurveyService } from '../../services'
 
 const SurveyCreatePage = () => {
   const [imageModalVisibility, setImageModalVisibility] = useState(false)
   const [questionModalVisibility, setQuestionModalVisibility] = useState(false)
+
+  const [survetData, setSurvetData] = useState({
+    title: '',
+    firstTitle: '',
+    finishTitle: '',
+    active: false,
+    logo: '63480f14fae8dace7565df47',
+  })
+
+  const [formData, setFormData] = useState([])
+
+  const onDelete = (id) => {
+    setFormData((x) => x.filter((item) => item.id !== id))
+  }
+
+  const submitHandle = () => {
+    console.log({ ...survetData, questions: formData })
+    const questions = formData.map((formItem) => {
+      switch (formItem.type) {
+        case 'text':
+          return {
+            questionType: 'text',
+            required: true,
+            question: {
+              title: formItem.value,
+            },
+          }
+        case 'select':
+          return {
+            questionType: 'select',
+            required: true,
+            question: {
+              title: formItem.title,
+              multiSelect: formItem.multiSelect,
+              options: formItem.selectItems
+                .map((option) => ({ option: option.value.trim() }))
+                .filter((option) => option.option.length !== 0),
+            },
+          }
+
+        default:
+          return formItem
+      }
+    })
+
+    SurveyService.newSurvey({
+      firstTitle: survetData.firstTitle,
+      finishTitle: survetData.finishTitle,
+      active: survetData.active,
+      title: survetData.title,
+      logo: survetData.logo,
+      questions,
+    })
+  }
 
   return (
     <>
@@ -25,34 +80,63 @@ const SurveyCreatePage = () => {
           <div className="mb-2 block">
             <Label value="Anket Başlığı" />
           </div>
-          <TextInput />
+          <TextInput
+            value={survetData.title}
+            onChange={(e) => setSurvetData((x) => ({ ...x, title: e.target.value }))}
+          />
         </div>
 
         <div>
           <div className="mb-2 block">
             <Label value="Selamlama / Giriş / Açıklama" />
           </div>
-          <Textarea rows={4} />
+          <Textarea
+            rows={4}
+            value={survetData.firstTitle}
+            onChange={(e) => setSurvetData((x) => ({ ...x, firstTitle: e.target.value }))}
+          />
         </div>
 
-        <SurveyForm />
+        <SurveyForm
+          formData={formData}
+          onDelete={onDelete}
+        />
 
-        <Button onClick={() => setQuestionModalVisibility(true)}>Soru Ekle</Button>
+        <Button
+          gradientDuoTone="tealToLime"
+          onClick={() => setQuestionModalVisibility(true)}
+        >
+          Soru Ekle
+        </Button>
 
         <div>
           <div className="mb-2 block">
             <Label value={'Özel "Teşekkür" Metni'} />
           </div>
-          <Textarea rows={4} />
+          <Textarea
+            rows={4}
+            value={survetData.finishTitle}
+            onChange={(e) => setSurvetData((x) => ({ ...x, finishTitle: e.target.value }))}
+          />
         </div>
+
+        <Button
+          gradientDuoTone="cyanToBlue"
+          onClick={submitHandle}
+        >
+          Kaydet
+        </Button>
       </div>
       <ImageModal
         show={imageModalVisibility}
-        onClose={() => setImageModalVisibility((x) => !x)}
+        onClose={() => setImageModalVisibility(false)}
       />
       <AddQuestionModal
         show={questionModalVisibility}
-        onClose={() => setQuestionModalVisibility((x) => !x)}
+        onClose={() => setQuestionModalVisibility(false)}
+        onSubmit={(data) => {
+          setFormData((x) => [...x, data])
+        }}
       />
     </>
   )

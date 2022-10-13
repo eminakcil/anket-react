@@ -1,13 +1,15 @@
 import classNames from 'classnames'
 import { Button, ListGroup, Modal } from 'flowbite-react'
+import { nanoid } from 'nanoid'
 import { useEffect, useRef, useState } from 'react'
 import { arrowLeft } from '../../../icons'
 import RateQuestion from './RateQuestion'
 import SelectQuestion from './SelectQuestion'
 import TextQuestion from './TextQuestion'
 
-const AddQuestionModal = ({ show, onClose }) => {
+const AddQuestionModal = ({ show, onClose, onSubmit, value }) => {
   const [questionType, setQuestionType] = useState(false)
+  const [questionValue, setQuestionValue] = useState(value)
 
   /** @type {import("react").MutableRefObject<HTMLElement>} */
   const questionSelectRef = useRef()
@@ -23,6 +25,20 @@ const AddQuestionModal = ({ show, onClose }) => {
   const calculateHeight = () => {
     const element = questionType ? contentRef : questionSelectRef
     ghostRef.current.style.height = `${element.current.clientHeight}px`
+  }
+
+  const onChangeHandle = (data) => {
+    setQuestionValue(data)
+    calculateHeight()
+  }
+
+  const onSubmitHandle = () => {
+    const data = { ...questionValue, id: nanoid() }
+    console.log(data)
+    onSubmit(data)
+    setQuestionType(false)
+    setQuestionValue(false)
+    onClose()
   }
 
   return (
@@ -58,10 +74,13 @@ const AddQuestionModal = ({ show, onClose }) => {
           </div>
           <div
             ref={contentRef}
-            className={classNames('absolute w-full left-0 z-10 transition-all duration-500', {
-              '-translate-x-0 opacity-100': !!questionType,
-              'translate-x-full opacity-0': !questionType,
-            })}
+            className={classNames(
+              'absolute w-full flex flex-col gap-4 left-0 z-10 transition-all duration-500',
+              {
+                '-translate-x-0 opacity-100': !!questionType,
+                'translate-x-full opacity-0': !questionType,
+              }
+            )}
           >
             <Button
               gradientDuoTone="cyanToBlue"
@@ -74,12 +93,12 @@ const AddQuestionModal = ({ show, onClose }) => {
                 <span>{arrowLeft}</span> <span>Geri</span>
               </div>
             </Button>
-            {(questionType === 'text' && <TextQuestion />) ||
-              (questionType === 'select' && <SelectQuestion onChange={calculateHeight} />) ||
-              (questionType === 'rate' && <RateQuestion onChange={calculateHeight} />) ||
+            {(questionType === 'text' && <TextQuestion onChange={onChangeHandle} />) ||
+              (questionType === 'select' && <SelectQuestion onChange={onChangeHandle} />) ||
+              (questionType === 'rate' && <RateQuestion onChange={onChangeHandle} />) ||
               (questionType === 'yes/no' && (
                 <SelectQuestion
-                  onChange={calculateHeight}
+                  onChange={onChangeHandle}
                   initalValue={[
                     { id: 1, value: 'Evet' },
                     { id: 2, value: 'Hayır' },
@@ -91,6 +110,14 @@ const AddQuestionModal = ({ show, onClose }) => {
                   multiSelect={false}
                 />
               ))}
+            <div className="mx-auto">
+              <Button
+                gradientDuoTone="pinkToOrange"
+                onClick={onSubmitHandle}
+              >
+                Kaydet
+              </Button>
+            </div>
           </div>
           <div
             ref={ghostRef}

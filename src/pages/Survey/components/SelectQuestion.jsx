@@ -12,6 +12,7 @@ const SelectQuestion = ({
   editableItems = true,
   allowMultiselectToggle = true,
   multiSelect = false,
+  title = '',
   onChange = () => {},
 }) => {
   const [_multiSelect, set_multiSelect] = useState(multiSelect)
@@ -21,9 +22,20 @@ const SelectQuestion = ({
     initialInputList(allowNewItem, initalValue)
   )
 
+  const [titleValue, setTitleValue] = useState(title)
+
   useEffect(() => {
-    onChange(selectItems, multiSelect)
-  }, [_multiSelect, selectItems])
+    onChange({
+      type: 'select',
+      title: titleValue,
+      multiSelect: _multiSelect,
+      allowMultiselectToggle,
+      selectItems,
+      allowNewItem,
+      label,
+      editableItems,
+    })
+  }, [_multiSelect, selectItems, titleValue])
 
   return (
     <div>
@@ -34,6 +46,10 @@ const SelectQuestion = ({
         <TextInput
           type="text"
           placeholder="Soru başlığı"
+          value={titleValue}
+          onChange={(e) => {
+            setTitleValue(e.target.value)
+          }}
         />
       </div>
       {allowMultiselectToggle && (

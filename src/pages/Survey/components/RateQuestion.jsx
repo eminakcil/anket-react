@@ -3,12 +3,19 @@ import { useEffect } from 'react'
 import { useMemo, useReducer } from 'react'
 import inputListReducer, { initialInputList } from '../../../reducers/inputListReducer'
 
-const RateQuestion = ({ prefix = '', onChange = () => {} }) => {
-  const [columns, columnsDispatch] = useReducer(inputListReducer, initialInputList())
-  const [rows, rowsDispatch] = useReducer(inputListReducer, initialInputList())
+const RateQuestion = ({ prefix = '', onChange = () => {}, initialColumns, initialRows }) => {
+  const [columns, columnsDispatch] = useReducer(
+    inputListReducer,
+    initialInputList(true, initialColumns)
+  )
+  const [rows, rowsDispatch] = useReducer(inputListReducer, initialInputList(true, initialRows))
 
   useEffect(() => {
-    onChange(columns, rows)
+    onChange({
+      type: 'rate',
+      columns,
+      rows,
+    })
   }, [columns, rows])
 
   const holes = useMemo(() => {
