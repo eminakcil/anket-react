@@ -1,7 +1,7 @@
-const Loading = () => {
+const Loading = ({ size = 10 }) => {
   return (
     <svg
-      className="animate-spin inline h-10 w-10 text-black"
+      className={`animate-spin inline h-${size} w-${size} text-black`}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"

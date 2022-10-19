@@ -4,18 +4,25 @@ import { plus } from '../../icons'
 import AddQuestionModal from './components/AddQuestionModal'
 import ImageModal from './components/ImageModal'
 import SurveyForm from './components/SurveyForm'
+import { toast } from 'react-toastify'
 import { SurveyService } from '../../services'
+import Loading from '../../components/Loading'
+import { useNavigate } from 'react-router-dom'
+import { getPath } from '../../utils.js'
 
 const SurveyCreatePage = () => {
   const [imageModalVisibility, setImageModalVisibility] = useState(false)
   const [questionModalVisibility, setQuestionModalVisibility] = useState(false)
+  const [loading, setLoading] = useState(false)
+
+  const navigate = useNavigate()
 
   const [survetData, setSurvetData] = useState({
     title: '',
     firstTitle: '',
     finishTitle: '',
     active: false,
-    logo: '63480f14fae8dace7565df47',
+    logo: '6349184f41e3495a18c16418',
   })
 
   const [formData, setFormData] = useState([])
@@ -25,7 +32,6 @@ const SurveyCreatePage = () => {
   }
 
   const submitHandle = () => {
-    console.log({ ...survetData, questions: formData })
     const questions = formData.map((formItem) => {
       switch (formItem.type) {
         case 'text':
@@ -48,12 +54,27 @@ const SurveyCreatePage = () => {
                 .filter((option) => option.option.length !== 0),
             },
           }
+        case 'rate':
+          return {
+            questionType: 'rate',
+            required: true,
+            question: {
+              title: formItem.title,
+              columnOptions: formItem.columns
+                .map((column) => ({ column: column.value }))
+                .filter(({ column }) => column.length !== 0),
+              rowOptions: formItem.rows
+                .map((row) => ({ row: row.value }))
+                .filter(({ row }) => row.length !== 0),
+            },
+          }
 
         default:
-          return formItem
+          return undefined
       }
     })
 
+    setLoading(true)
     SurveyService.newSurvey({
       firstTitle: survetData.firstTitle,
       finishTitle: survetData.finishTitle,
@@ -62,6 +83,24 @@ const SurveyCreatePage = () => {
       logo: survetData.logo,
       questions,
     })
+      .then((response) => {
+        console.log(response)
+        toast.success('Kaydedildi', {
+          position: 'top-right',
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        })
+
+        navigate(getPath('surveys'))
+      })
+      .finally(() => {
+        setLoading(false)
+      })
   }
 
   return (
@@ -123,8 +162,9 @@ const SurveyCreatePage = () => {
         <Button
           gradientDuoTone="cyanToBlue"
           onClick={submitHandle}
+          disabled={loading}
         >
-          Kaydet
+          <div className="flex gap-3 items-center">{loading && <Loading size={5} />} Kaydet</div>
         </Button>
       </div>
       <ImageModal

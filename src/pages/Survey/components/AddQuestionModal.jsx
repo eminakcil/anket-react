@@ -34,7 +34,6 @@ const AddQuestionModal = ({ show, onClose, onSubmit, value }) => {
 
   const onSubmitHandle = () => {
     const data = { ...questionValue, id: nanoid() }
-    console.log(data)
     onSubmit(data)
     setQuestionType(false)
     setQuestionValue(false)
@@ -89,7 +88,7 @@ const AddQuestionModal = ({ show, onClose, onSubmit, value }) => {
                 setQuestionType(false)
               }}
             >
-              <div className="flex gap-4 items-center text-white">
+              <div className="flex gap-4 items-center text-white overflow-hidden">
                 <span>{arrowLeft}</span> <span>Geri</span>
               </div>
             </Button>

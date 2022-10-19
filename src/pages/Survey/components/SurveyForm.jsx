@@ -32,6 +32,7 @@ const SurveyForm = ({ formData, onDelete = () => {} }) => {
                 prefix={`${index + 1}. `}
                 initialColumns={formItem.columns}
                 initialRows={formItem.rows}
+                initialTitle={formItem.title}
               />
             ))}
           <div>

@@ -1,9 +1,16 @@
 import { Label, Table, TextInput } from 'flowbite-react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useMemo, useReducer } from 'react'
 import inputListReducer, { initialInputList } from '../../../reducers/inputListReducer'
 
-const RateQuestion = ({ prefix = '', onChange = () => {}, initialColumns, initialRows }) => {
+const RateQuestion = ({
+  prefix = '',
+  onChange = () => {},
+  initialColumns,
+  initialRows,
+  initialTitle = '',
+}) => {
+  const [title, setTitle] = useState(initialTitle)
   const [columns, columnsDispatch] = useReducer(
     inputListReducer,
     initialInputList(true, initialColumns)
@@ -13,6 +20,7 @@ const RateQuestion = ({ prefix = '', onChange = () => {}, initialColumns, initia
   useEffect(() => {
     onChange({
       type: 'rate',
+      title,
       columns,
       rows,
     })
@@ -29,6 +37,12 @@ const RateQuestion = ({ prefix = '', onChange = () => {}, initialColumns, initia
   return (
     <>
       <Label value={`${prefix}Derecelendirme soru tipi`} />
+      <TextInput
+        type="text"
+        placeholder="Başlık"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
       <Table>
         <Table.Body>
           <Table.Row>

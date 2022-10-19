@@ -43,9 +43,11 @@ export const getPath = (path, data = {}) => {
     .map((x) => x?.path)
     .join('/')
 
-  if (finalRoute.length === 0) {
-    finalRoute = '/'
-  }
+  finalRoute = '/'.concat(finalRoute)
+
+  // if (finalRoute.length === 1) {
+  //   finalRoute = '/'
+  // }
 
   return generatePath(finalRoute, data)
 }

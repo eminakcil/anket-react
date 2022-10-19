@@ -27,7 +27,9 @@ function request(url, data = false, method = 'GET', type = 'FORM_DATA') {
           reject(result)
         }
       })
-      .catch((error) => reject(error))
+      .catch((error) => {
+        reject(error)
+      })
   })
 }
 
