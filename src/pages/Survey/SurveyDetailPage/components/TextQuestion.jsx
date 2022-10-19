@@ -1,4 +1,4 @@
-import { dateFormat } from "../../../../utils.js";
+import { dateFormat } from '../../../../utils.js'
 
 const TextQuestion = ({ question }) => {
   return (
