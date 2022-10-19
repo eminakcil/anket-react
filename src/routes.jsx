@@ -9,6 +9,8 @@ const SurveyListPage = lazy(() => import('./pages/Survey/SurveyListPage'))
 const SurveyCreatePage = lazy(() => import('./pages/Survey/SurveyCreatePage'))
 const SurveyDetailPage = lazy(() => import('./pages/Survey/SurveyDetailPage'))
 
+const AnswerCreatePage = lazy(() => import('./pages/Answer/AnswerCreatePage.jsx'))
+
 /** @type {import('react-router-dom').RouteObject[]} */
 const routes = [
   {
@@ -40,6 +42,18 @@ const routes = [
             path: ':id',
             name: 'detail',
             element: <SurveyDetailPage />,
+            lazy: true,
+          },
+        ],
+      },
+      {
+        path: 'answers',
+        name: 'answers',
+        children: [
+          {
+            path: ':surveyId',
+            name: 'create',
+            element: <AnswerCreatePage />,
             lazy: true,
           },
         ],

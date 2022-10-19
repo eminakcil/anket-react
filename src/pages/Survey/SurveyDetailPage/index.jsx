@@ -40,7 +40,13 @@ const SurveyDetailPage = () => {
 
         <div className="flex flex-col gap-3">
           {survey.questions.reduce((acc, curr) => {
-            if (curr.questionType === 'text') return acc.concat(<TextQuestion key={curr._id} question={curr} />)
+            if (curr.questionType === 'text')
+              return acc.concat(
+                <TextQuestion
+                  key={curr._id}
+                  question={curr}
+                />
+              )
             if (curr.questionType === 'select') return acc.concat(<SelectQuestion key={curr._id} />)
             if (curr.questionType === 'rate') return acc.concat(<RateQuestion key={curr._id} />)
             return acc

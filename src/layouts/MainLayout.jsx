@@ -26,7 +26,7 @@ const MainLayout = () => {
           </Button>
           <Button
             as={Link}
-            to="/"
+            to={getPath('answers.create', { surveyId: '634919a841e3495a18c16439' })}
             className="flex-1"
           >
             Anket Cevapla
