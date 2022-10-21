@@ -30,7 +30,7 @@ const SurveyDetailPage = () => {
 
   return (
     <>
-      <pre>{JSON.stringify(survey)}</pre>
+      {/* <pre>{JSON.stringify(survey)}</pre> */}
       <div className="flex flex-col gap-3">
         <span className="text-2xl font-medium self-center">{survey.title}</span>
         <div className="flex flex-col py-3 px-2 border border-solid border-gray-200 rounded-xl">
@@ -40,15 +40,27 @@ const SurveyDetailPage = () => {
 
         <div className="flex flex-col gap-3">
           {survey.questions.reduce((acc, curr) => {
-            if (curr.questionType === 'text')
+          if (curr.questionType === 'text')
               return acc.concat(
                 <TextQuestion
                   key={curr._id}
                   question={curr}
                 />
               )
-            if (curr.questionType === 'select') return acc.concat(<SelectQuestion key={curr._id} />)
-            if (curr.questionType === 'rate') return acc.concat(<RateQuestion key={curr._id} />)
+            if (curr.questionType === 'select')
+              return acc.concat(
+                <SelectQuestion
+                  key={curr._id}
+                  question={curr}
+                />
+              )
+            if (curr.questionType === 'rate')
+              return acc.concat(
+                <RateQuestion
+                  key={curr._id}
+                  question={curr}
+                />
+              )
             return acc
           }, [])}
         </div>
