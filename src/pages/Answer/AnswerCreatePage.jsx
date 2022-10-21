@@ -164,7 +164,11 @@ const AnswerCreatePage = () => {
     <>
       {/*<pre>{JSON.stringify(survey, null, 2)}</pre>*/}
       <div className="flex flex-col gap-3">
-        <div>{/*<span>logo --#-- {survey.logo.path}</span>*/}</div>
+        <img
+          className="justify-self-center w-full max-w-xl self-center"
+          src={'http://localhost:3000'.concat(survey.logo.path)}
+          crossOrigin="anonymous"
+        />
         <div className="py-3 px-2 border border-solid border-gray-200 rounded-xl">
           <span className="font-medium">{survey.firstTitle}</span>
         </div>
