@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 import { TextInput } from 'flowbite-react'
+=======
+>>>>>>> 0eca09edaf4794379ec248050a1ae962bc0c46da
 import { dateFormat } from '../../../../utils.js'
 
 const TextQuestion = ({ question }) => {
