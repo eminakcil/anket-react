@@ -1,19 +1,22 @@
 import { Button, Label, Textarea, TextInput } from 'flowbite-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { plus } from '../../icons'
 import AddQuestionModal from './components/AddQuestionModal'
 import ImageModal from './components/ImageModal'
 import SurveyForm from './components/SurveyForm'
 import { toast } from 'react-toastify'
-import { SurveyService } from '../../services'
+import { SurveyService, LogoService } from '../../services'
 import Loading from '../../components/Loading'
 import { useNavigate } from 'react-router-dom'
-import { getPath } from '../../utils.js'
+import { getPath } from '../../utils'
+import classNames from 'classnames'
 
 const SurveyCreatePage = () => {
+  const [logos, setLogos] = useState(false)
   const [imageModalVisibility, setImageModalVisibility] = useState(false)
   const [questionModalVisibility, setQuestionModalVisibility] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [selectedLogo, setSelectedLogo] = useState(false)
 
   const navigate = useNavigate()
 
@@ -22,8 +25,12 @@ const SurveyCreatePage = () => {
     firstTitle: '',
     finishTitle: '',
     active: false,
-    logo: '6349184f41e3495a18c16418',
+    logo: false,
   })
+
+  useEffect(() => {
+    LogoService.list().then(setLogos)
+  }, [])
 
   const [formData, setFormData] = useState([])
 
@@ -103,15 +110,40 @@ const SurveyCreatePage = () => {
       })
   }
 
+  const logoChangeHandle = (logo) => {
+    console.log(logo)
+    setSelectedLogo(logo)
+  }
+
+  useEffect(() => {
+    if (selectedLogo) setSurvetData((x) => ({ ...x, logo: selectedLogo._id }))
+  }, [selectedLogo])
+
+  console.log(logos)
+
   return (
     <>
       <div className="grid grid-cols-1 gap-4">
         <div className="flex justify-center">
           <div
             onClick={() => setImageModalVisibility(true)}
-            className="bg-gray-300 p-10 rounded-2xl text-gray-700 hover:bg-gray-400 hover:text-gray-100 cursor-pointer select-none"
+            className={classNames(
+              'cursor-pointer select-none min-w-[104px] h-[104px] flex justify-center items-center',
+              {
+                'bg-gray-300 rounded-2xl text-gray-700 hover:bg-gray-400 hover:text-gray-100':
+                  !selectedLogo,
+              }
+            )}
           >
-            {plus}
+            {selectedLogo ? (
+              <img
+                crossOrigin="anonymous"
+                src={'http://localhost:3000'.concat(selectedLogo.path)}
+                className="max-w-full max-h-full"
+              />
+            ) : (
+              plus
+            )}
           </div>
         </div>
 
@@ -167,10 +199,14 @@ const SurveyCreatePage = () => {
           <div className="flex gap-3 items-center">{loading && <Loading size={5} />} Kaydet</div>
         </Button>
       </div>
-      <ImageModal
-        show={imageModalVisibility}
-        onClose={() => setImageModalVisibility(false)}
-      />
+      {logos && (
+        <ImageModal
+          show={imageModalVisibility}
+          onClose={() => setImageModalVisibility(false)}
+          logos={logos}
+          onChange={logoChangeHandle}
+        />
+      )}
       <AddQuestionModal
         show={questionModalVisibility}
         onClose={() => setQuestionModalVisibility(false)}
