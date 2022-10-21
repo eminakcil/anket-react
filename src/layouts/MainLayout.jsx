@@ -26,7 +26,7 @@ const MainLayout = () => {
           </Button>
           <Button
             as={Link}
-            to="/"
+            to={getPath('surveys.statistics')}
             className="flex-1"
           >
             Anket Cevapla
