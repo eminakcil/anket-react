@@ -120,7 +120,7 @@ const AddQuestionModal = ({ show, onClose, onSubmit, value }) => {
           </div>
           <div
             ref={ghostRef}
-            className="opacity-0 z-0"
+            className="opacity-0 z-0 duration-500"
           ></div>
         </div>
       </Modal.Body>

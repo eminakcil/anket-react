@@ -5,14 +5,13 @@ import AddQuestionModal from './components/AddQuestionModal'
 import ImageModal from './components/ImageModal'
 import SurveyForm from './components/SurveyForm'
 import { toast } from 'react-toastify'
-import { SurveyService, LogoService } from '../../services'
+import { SurveyService } from '../../services'
 import Loading from '../../components/Loading'
 import { useNavigate } from 'react-router-dom'
 import { getPath } from '../../utils'
 import classNames from 'classnames'
 
 const SurveyCreatePage = () => {
-  const [logos, setLogos] = useState(false)
   const [imageModalVisibility, setImageModalVisibility] = useState(false)
   const [questionModalVisibility, setQuestionModalVisibility] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -27,10 +26,6 @@ const SurveyCreatePage = () => {
     active: false,
     logo: false,
   })
-
-  useEffect(() => {
-    LogoService.list().then(setLogos)
-  }, [])
 
   const [formData, setFormData] = useState([])
 
@@ -119,8 +114,6 @@ const SurveyCreatePage = () => {
     if (selectedLogo) setSurvetData((x) => ({ ...x, logo: selectedLogo._id }))
   }, [selectedLogo])
 
-  console.log(logos)
-
   return (
     <>
       <div className="grid grid-cols-1 gap-4">
@@ -199,14 +192,11 @@ const SurveyCreatePage = () => {
           <div className="flex gap-3 items-center">{loading && <Loading size={5} />} Kaydet</div>
         </Button>
       </div>
-      {logos && (
-        <ImageModal
-          show={imageModalVisibility}
-          onClose={() => setImageModalVisibility(false)}
-          logos={logos}
-          onChange={logoChangeHandle}
-        />
-      )}
+      <ImageModal
+        show={imageModalVisibility}
+        onClose={() => setImageModalVisibility(false)}
+        onChange={logoChangeHandle}
+      />
       <AddQuestionModal
         show={questionModalVisibility}
         onClose={() => setQuestionModalVisibility(false)}
