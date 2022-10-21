@@ -40,7 +40,7 @@ const SurveyDetailPage = () => {
 
         <div className="flex flex-col gap-3">
           {survey.questions.reduce((acc, curr) => {
-          if (curr.questionType === 'text')
+            if (curr.questionType === 'text')
               return acc.concat(
                 <TextQuestion
                   key={curr._id}
